@@ -1,0 +1,39 @@
+{% extends 'main_app/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <h2 class="text-2xl font-bold mb-4">Your Advertisement Campaigns</h2>
+    <a href="{% url 'create_campaign' %}" class="bg-blue-500 text-white px-4 py-2 rounded">Create New Campaign</a>
+    <div class="mt-6">
+        {% if campaigns %}
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b">Name</th>
+                        <th class="py-2 px-4 border-b">Description</th>
+                        <th class="py-2 px-4 border-b">Created At</th>
+                        <th class="py-2 px-4 border-b">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for campaign in campaigns %}
+                        <tr>
+                            <td class="py-2 px-4 border-b">{{ campaign.name }}</td>
+                            <td class="py-2 px-4 border-b">{{ campaign.description }}</td>
+                            <td class="py-2 px-4 border-b">{{ campaign.created_at|date:"Y-m-d H:i" }}</td>
+                            <td class="py-2 px-4 border-b">
+                                <!-- Add Edit and Delete buttons -->
+                                <a href="{% url 'delete_campaign' campaign.id %}" class="text-red-500">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="mt-4">You have no advertisement campaigns.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

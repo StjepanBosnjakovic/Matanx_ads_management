@@ -1,0 +1,15 @@
+{% extends 'main_app/base.html' %}
+
+{% block title %}Delete Campaign{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <h2 class="text-2xl font-bold mb-4">Delete Campaign</h2>
+    <p>Are you sure you want to delete the campaign "{{ campaign.name }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="mt-4 bg-red-500 text-white py-2 px-4 rounded">Delete</button>
+        <a href="{% url 'dashboard' %}" class="ml-4 text-blue-500">Cancel</a>
+    </form>
+</div>
+{% endblock %}
