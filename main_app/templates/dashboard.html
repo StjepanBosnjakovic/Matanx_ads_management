@@ -1,4 +1,4 @@
-{% extends 'main_app/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Dashboard{% endblock %}
 
@@ -18,17 +18,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for campaign in campaigns %}
-                        <tr>
-                            <td class="py-2 px-4 border-b">{{ campaign.name }}</td>
-                            <td class="py-2 px-4 border-b">{{ campaign.description }}</td>
-                            <td class="py-2 px-4 border-b">{{ campaign.created_at|date:"Y-m-d H:i" }}</td>
-                            <td class="py-2 px-4 border-b">
-                                <!-- Add Edit and Delete buttons -->
-                                <a href="{% url 'delete_campaign' campaign.id %}" class="text-red-500">Delete</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                    <tbody>
+                        {% for campaign in campaigns %}
+                            <tr>
+                                <td class="py-2 px-4 border-b">{{ campaign.name }}</td>
+                                <td class="py-2 px-4 border-b">{{ campaign.description }}</td>
+                                <td class="py-2 px-4 border-b">
+                                    {% if campaign.media_asset %}
+                                        <a href="{{ campaign.media_asset.url }}" target="_blank">View Asset</a>
+                                    {% else %}
+                                        No asset uploaded
+                                    {% endif %}
+                                </td>
+                                <!-- ... other table cells ... -->
+                                <td class="py-2 px-4 border-b">
+                                    <a href="{% url 'edit_campaign' campaign.id %}" class="text-blue-500 mr-2">Edit</a>
+                                    <a href="{% url 'delete_campaign' campaign.id %}" class="text-red-500">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
                 </tbody>
             </table>
         {% else %}

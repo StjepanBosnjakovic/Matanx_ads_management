@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% block title %}Create Campaign{% endblock %}
+{% block title %}Edit Campaign{% endblock %}
 
 {% block content %}
 <div class="container mx-auto mt-10">
-    <h2 class="text-2xl font-bold mb-4">Create a New Campaign</h2>
+    <h2 class="text-2xl font-bold mb-4">Edit Campaign</h2>
     <form method="post" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md w-full max-w-lg">
         {% csrf_token %}
         {{ form.non_field_errors }}
         {{ form|crispy }}
-        <button type="submit" class="mt-4 w-full bg-green-500 text-white py-2 px-4 rounded">Create Campaign</button>
+        <button type="submit" class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded">Update Campaign</button>
     </form>
 </div>
 {% endblock %}

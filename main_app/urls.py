@@ -1,6 +1,8 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     # Home view
@@ -18,5 +20,9 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('campaign/create/', views.create_campaign, name='create_campaign'),
     path('campaign/delete/<int:campaign_id>/', views.delete_campaign, name='delete_campaign'),
+    path('campaign/edit/<int:campaign_id>/', views.edit_campaign, name='edit_campaign'),  # If implementing edit
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
