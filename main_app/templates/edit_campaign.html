@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load custom_filters %}
 {% block title %}Edit Campaign{% endblock %}
 
 {% block content %}
@@ -7,8 +8,26 @@
     <h2 class="text-2xl font-bold mb-4">Edit Campaign</h2>
     <form method="post" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md w-full max-w-lg">
         {% csrf_token %}
-        {{ form.non_field_errors }}
         {{ form|crispy }}
+        <!-- Display existing media asset -->
+        {% if campaign.media_asset %}
+            <div class="mt-4">
+                <label class="block text-gray-700">Current Media Asset:</label>
+                {% if campaign.media_asset.url|endswith:".jpg" or campaign.media_asset.url|endswith:".jpeg" or campaign.media_asset.url|endswith:".png" or campaign.media_asset.url|endswith:".gif" %}
+                    <!-- Display image -->
+                    <img src="{{ campaign.media_asset.url }}" alt="{{ campaign.name }}" class="w-32 h-32 object-cover mt-2">
+                {% elif campaign.media_asset.url|endswith:".mp4" or campaign.media_asset.url|endswith:".webm" or campaign.media_asset.url|endswith:".ogg" %}
+                    <!-- Display video -->
+                    <video width="320" height="240" controls class="mt-2">
+                        <source src="{{ campaign.media_asset.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% else %}
+                    <!-- Display a link to download the file -->
+                    <a href="{{ campaign.media_asset.url }}" target="_blank">View Current Asset</a>
+                {% endif %}
+            </div>
+        {% endif %}
         <button type="submit" class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded">Update Campaign</button>
     </form>
 </div>

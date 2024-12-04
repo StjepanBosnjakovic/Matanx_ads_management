@@ -36,3 +36,8 @@ class AdvertisementCampaignForm(forms.ModelForm):
     def clean_min_time_between_runs(self):
         hours = self.cleaned_data['min_time_between_runs']
         return timedelta(hours=hours)
+    
+    def get_estimated_cost(self):
+        # Implement logic to estimate cost based on campaign settings
+        # For simplicity, return a placeholder value
+        return 100.00  # Replace with actual estimation logic

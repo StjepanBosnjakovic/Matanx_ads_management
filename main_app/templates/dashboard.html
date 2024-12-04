@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 
 {% block title %}Dashboard{% endblock %}
 
@@ -13,31 +14,41 @@
                     <tr>
                         <th class="py-2 px-4 border-b">Name</th>
                         <th class="py-2 px-4 border-b">Description</th>
-                        <th class="py-2 px-4 border-b">Created At</th>
+                        <th class="py-2 px-4 border-b">Media Asset</th>
                         <th class="py-2 px-4 border-b">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tbody>
-                        {% for campaign in campaigns %}
-                            <tr>
-                                <td class="py-2 px-4 border-b">{{ campaign.name }}</td>
-                                <td class="py-2 px-4 border-b">{{ campaign.description }}</td>
-                                <td class="py-2 px-4 border-b">
-                                    {% if campaign.media_asset %}
-                                        <a href="{{ campaign.media_asset.url }}" target="_blank">View Asset</a>
+                    {% for campaign in campaigns %}
+                        <tr>
+                            <td class="py-2 px-4 border-b">{{ campaign.name }}</td>
+                            <td class="py-2 px-4 border-b">{{ campaign.description }}</td>
+                            <td class="py-2 px-4 border-b">
+                                {% if campaign.media_asset %}
+                                    {% if campaign.media_asset.url|endswith:".jpg" or campaign.media_asset.url|endswith:".jpeg" or campaign.media_asset.url|endswith:".png" or campaign.media_asset.url|endswith:".gif" %}
+                                        <!-- Display image -->
+                                        <img src="{{ campaign.media_asset.url }}" alt="{{ campaign.name }}" class="w-32 h-32 object-cover">
+                                    {% elif campaign.media_asset.url|endswith:".mp4" or campaign.media_asset.url|endswith:".webm" or campaign.media_asset.url|endswith:".ogg" %}
+                                        <!-- Display video -->
+                                        <video width="320" height="240" controls>
+                                            <source src="{{ campaign.media_asset.url }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
                                     {% else %}
-                                        No asset uploaded
+                                        <!-- Display a link to download the file -->
+                                        <a href="{{ campaign.media_asset.url }}" target="_blank">View Asset</a>
                                     {% endif %}
-                                </td>
-                                <!-- ... other table cells ... -->
-                                <td class="py-2 px-4 border-b">
-                                    <a href="{% url 'edit_campaign' campaign.id %}" class="text-blue-500 mr-2">Edit</a>
-                                    <a href="{% url 'delete_campaign' campaign.id %}" class="text-red-500">Delete</a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
+                                {% else %}
+                                    No asset uploaded
+                                {% endif %}
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <a href="{% url 'campaign_run_history' campaign.id %}" class="text-blue-500 mr-2">View Run History</a>
+                                <a href="{% url 'edit_campaign' campaign.id %}" class="text-blue-500 mr-2">Edit</a>
+                                <a href="{% url 'delete_campaign' campaign.id %}" class="text-red-500">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         {% else %}

@@ -9,7 +9,11 @@
         {% csrf_token %}
         {{ form.non_field_errors }}
         {{ form|crispy }}
+        {% if form.get_estimated_cost %}
+            <p>Estimated Cost: ${{ form.get_estimated_cost }}</p>
+        {% endif %}
         <button type="submit" class="mt-4 w-full bg-green-500 text-white py-2 px-4 rounded">Create Campaign</button>
+        
     </form>
 </div>
 {% endblock %}
